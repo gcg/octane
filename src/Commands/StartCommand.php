@@ -72,6 +72,7 @@ class StartCommand extends Command implements SignalableCommandInterface
             '--max-requests' => $this->option('max-requests'),
             '--watch' => $this->option('watch'),
             '--poll' => $this->option('poll'),
+            '--log-level' => $this->option('log-level'),
         ]);
     }
 
