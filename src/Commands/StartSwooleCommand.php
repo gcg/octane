@@ -156,7 +156,7 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
     {
         dump([
             'option' => $this->option('log-level'),
-            'c' => constant($this->option('log-level')),
+            'c' => $this->option('log-level') ? constant($this->option('log-level')) : 'N/A',
         ]);
         if ($this->option('log-level') && constant($this->option('log-level'))) {
             return constant($this->option('log-level'));
