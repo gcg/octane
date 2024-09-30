@@ -126,7 +126,7 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
             'enable_coroutine' => false,
             'daemonize' => false,
             'log_file' => storage_path('logs/swoole_http.log'),
-            'log_level' => app()->environment('local') ? SWOOLE_LOG_INFO : SWOOLE_LOG_ERROR,
+            'log_level' =>  $this->logLevel(),
             'max_request' => $this->option('max-requests'),
             'package_max_length' => 10 * 1024 * 1024,
             'reactor_num' => $this->workerCount($extension),
@@ -136,6 +136,28 @@ class StartSwooleCommand extends Command implements SignalableCommandInterface
             'task_worker_num' => $this->taskWorkerCount($extension),
             'worker_num' => $this->workerCount($extension),
         ];
+    }
+
+    /**
+     * Returns the log level constant first from log level flag if set or from app environment
+     *
+     * log level
+     * SWOOLE_LOG_DEBUG
+     * SWOOLE_LOG_TRACE
+     * SWOOLE_LOG_INFO
+     * SWOOLE_LOG_NOTICE
+     * SWOOLE_LOG_WARNING
+     * SWOOLE_LOG_ERROR
+     *
+     * @return int
+     */
+    protected function logLevel(): int
+    {
+        if ($this->option('log-level') && constant($this->option('log-level'))) {
+            return constant($this->option('log-level'));
+        }
+
+        return app()->environment('local') ? SWOOLE_LOG_INFO : SWOOLE_LOG_ERROR;
     }
 
     /**
